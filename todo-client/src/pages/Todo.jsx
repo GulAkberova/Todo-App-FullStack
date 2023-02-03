@@ -34,11 +34,10 @@ function Todo() {
         setAll(res);
       });
     });
-    setValue(" ");
   };
   const handleDelete = (id) => {
     agent.getByDelete(BASE_URL, id).then((res) => {
-      console.log(res);
+     
       agent.getAll(BASE_URL).then((res) => {
         setAll(res);
       });
@@ -60,8 +59,22 @@ function Todo() {
       text: item.text,
     });
     handleOpen()
-    console.log(update);
+    console.log(update,item._id)
+   
   };
+
+  const handlePut=()=>{
+    console.log('update',update.id);
+    let id=update.id
+    agent.getByPut(BASE_URL,id,update).then(res=>{
+      agent.getAll(BASE_URL).then((res) => {
+        setAll(res);
+      });
+      handleClose()
+      
+    })
+
+  }
   return (
     <>
       <div className="todo_bigdiv">
@@ -103,8 +116,13 @@ function Todo() {
             Update
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {update && <input type={"text"}  value={update.text}/>}
-            <button>Updatde</button>
+            {update && <input type={"text"}  value={update.text} onChange={(e)=>setUpdate((prevState)=>{
+              return{
+                ...prevState,
+                text:e.target.value
+              }
+            })}/>}
+            <button onClick={()=>handlePut()}>Updatde</button>
           </Typography>
         </Box>
       </Modal>

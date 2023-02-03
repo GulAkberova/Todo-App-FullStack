@@ -2,27 +2,29 @@ const express = require("express");
 var cors = require("cors");
 const { urlencoded } = require("express");
 const { default: mongoose } = require("mongoose");
-const todoRouter=require('./routes/TodoRouter')
-
+require("dotenv").config();
+const todoRouter = require("./routes/TodoRouter");
 
 const app = express();
-require("dotenv").config();
+
 app.use(cors());
 app.use(express.json());
 app.use(urlencoded());
 
 const PORT = process.env.POST || 3000;
-app.use(function (req, res, next) {
-  if (false) {
-    res.status(401).json("Access error");
-  } else {
-    next();
-  }
-});
+// app.use(function (req, res, next) {
+//   if (false) {
+//     res.status(401).json("Access error");
+//   } else {
+//     next();
+//   }
+// });
 
 mongoose.set("strictQuery", false);
+
 const mongoDbUser = process.env.mongoDbUser;
 const mongoDbPassword = process.env.mongoDbPassword;
+
 mongoose
   .connect(
     `mongodb+srv://${mongoDbUser}:${mongoDbPassword}@cluster0.oxil0us.mongodb.net/TodoApp`
@@ -34,8 +36,6 @@ mongoose
     console.log("err", err);
   });
 
-app.use('/api/todo',todoRouter)
-
-
+app.use("/api/todo", todoRouter);
 
 app.listen(PORT);
